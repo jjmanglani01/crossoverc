@@ -25,7 +25,7 @@ LoginWidget::LoginWidget(const std::string & name, Wt::WContainerWidget * parent
 	this->addWidget(new WBreak());
 	this->addWidget(new WBreak());
 
-
+	_bAuthenticated = false;
 
 	_lblWarning = new WText("Incorrect Username or Password", this);
 	_lblWarning->hide();
@@ -35,19 +35,24 @@ LoginWidget::~LoginWidget()
 {
 }
 
-void LoginWidget::authenticate()
+bool LoginWidget::authenticate(std::string strUserName, std::string strPassword)
 {
 	_lblWarning->hide();
 	Http::Client *client = new Http::Client(this);
 	client->setTimeout(15);
 	client->setMaximumResponseSize(10 * 1024);
 	client->done().connect(boost::bind(&LoginWidget::handleHttpResponse, this, _1, _2));
-	if (client->get("http://localhost/json/login?userName=" + _username->text().toUTF8() + "&password=" + _password->text().toUTF8())) {
+	if (client->get("http://localhost/json/login?userName=" + strUserName + "&password=" + strPassword)) {
 	}
 	else {
 		_lblWarning->setText("There is something wrong with system");
 		_lblWarning->show();
 	}
+}
+
+void LoginWidget::authenticate()
+{
+	authenticate(_username->text().toUTF8(), _password->text().toUTF8());
 }
 
 void LoginWidget::registerUser()

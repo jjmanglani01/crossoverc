@@ -25,6 +25,8 @@ private:
 	WPushButton *_register;
 	void registerUser();
 	void authenticate();
+	bool _bAuthenticated;
+	bool authenticate(std::string strUserName, std::string strPassword);
 	void handleHttpResponse(boost::system::error_code err, const Http::Message& response);
 	Wt::Signal<std::string,std::string> _logedin;
 	void processLogin();

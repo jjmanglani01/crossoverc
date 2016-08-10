@@ -115,6 +115,20 @@ json::value getTransaction(utf8string strUserName)
 	return arr;
 }
 
+void connectToMongoDb()
+{
+	//Connect MongoDb
+	try
+	{
+		c.connect("localhost:27017");
+		mongo::client::initialize();
+	}
+	catch (exception& e)
+	{
+		throw e;
+	}
+}
+
 int main()
 {
 	uclog << U("Starting listener.") << endl;
